@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Book Page</title>
+
+    <!-- Add Font Awesome for the music control icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<style>* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f0e6;
+    font-family: 'Georgia', serif;
+    perspective: 1500px;
+}
+
+.book-container {
+    display: flex;
+    
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.book {
+    position: relative;
+    
+    width: 100%;
+    max-width: 400px;
+    height: 560px;
+    transform-style: preserve-3d;
+}
+
+/* Scale book height for smaller screens */
+@media (max-width: 600px) {
+    .book {
+        height: 550px;
+    }
+}
+
+/* Even smaller for very small screens */
+@media (max-width: 400px) {
+    .book {
+        height: 550px;
+    }
+}
+
+.book-cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color:#490101;
+    border-radius: 5px 15px 15px 5px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e0d9c6;
+    font-size: clamp(18px, 5vw, 24px);
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.page {
+
+    position: absolute;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    background-color: brown;
+    border-radius: 2px 10px 10px 2px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+    transition: transform 1.2s, z-index 0.6s;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+
+.view-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #7b0404;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 150px;
+}
+
+.view-button:hover {
+    background-color:#a70707;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+.container {
+    position: absolute;
+    top: 66.67%; /* 2/3 from the top = 1/3 from the bottom */
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+.view-button1 {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #7b0404;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 25px 25px 25px 25px;
+}
+
+.view-button1:hover {
+    background-color:#a70707;
+}
+
+
+.page-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: clamp(15px, 5vw, 30px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    backface-visibility: hidden;
+    overflow-y: auto;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.page-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.page-content {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.page-front {
+    transform: rotateY(0deg);
+}
+
+.page-back {
+    transform: rotateY(180deg);
+}
+
+.page-title {
+    font-size: clamp(18px, 5vw, 24px);
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #52392c;
+    text-align: center;
+}
+
+.page-number {
+    position: absolute;
+    bottom: 20px;
+    font-style: italic;
+    color: #9c8d7f;
+}
+
+.page-text {
+    font-size: clamp(14px, 4vw, 16px);
+    line-height: 1.6;
+    color: #06b9c2;
+    text-align: justify;
+}
+
+.flipped {
+    transform: rotateY(-180deg);
+    z-index: 0;
+}
+
+.page:nth-child(2) {
+    z-index: 8;
+}
+
+.page:nth-child(3) {
+    z-index: 7;
+}
+
+.page:nth-child(4) {
+    z-index: 6;
+}
+
+.page:nth-child(5) {
+    z-index: 5;
+}
+
+.page:nth-child(6) {
+    z-index: 4;
+}
+
+.page:nth-child(7) {
+    z-index: 3;
+}
+
+.page-curl {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, transparent 75%, rgba(0,0,0,0.05) 75%);
+    pointer-events: none;
+}
+
+.navigation {
+    width: 100%;
+    max-width: 400px;
+}
+
+.nav-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.nav-button {
+    padding: 10px 20px;
+    background-color: #490101;
+    color: #e0d9c6;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Georgia', serif;
+    font-size: clamp(14px, 4vw, 16px);
+    transition: all 0.3s ease;
+    touch-action: manipulation;
+}
+
+.nav-button:hover {
+    background-color: #650202;
+}
+
+.nav-button:disabled {
+    background-color: #b9a89a;
+    cursor: not-allowed;
+}
+
+.page-indicator {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    color: #52392c;
+    font-size: clamp(14px, 4vw, 16px);
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+    .nav-button {
+        padding: 12px 24px; /* Larger touch targets */
+    }
+}
+
+
+
+#music-control {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(74, 144, 226, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+#music-control:hover {
+    background-color: rgba(53, 122, 189, 0.9);
+    transform: scale(1.05);
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
+
+.music-icon {
+    font-size: 24px;
+}
+.logo{
+    margin-top: 100px;
+    text-align: center;
+}
+#page1{
+    background-image: url("ganpatti.jpg");
+    background-size: cover;
+}
+#page2{
+    background-image: url("page2.jpg");
+    background-size: cover;
+}
+#page3{
+    background-image: url("couple.jpg");
+    background-size: cover;
+}
+#page4{
+    background-image: url("event.png");
+    background-size: cover;
+}
+#page6{
+    background-image: url("radhe3.png");
+    background-size: cover;
+    color: #e6e7f5;
+}
+#page5{
+    background-image: url("info2.jpg");
+    background-size: cover;
+}
+
+</style>
+<body>
+    <div class="book-container">
+        <div class="book">
+            <div class="book-cover">The Mysterious Tales</div>
+            
+            <div class="page" id="page1">
+                <div class="page-content page-front">
+                    <div class="page-title">|| ॐ श्री गणेशाय नमः ||</div>
+                    <div class="page-text">
+                       
+                    </div>
+                    <div class="page-number">1</div>
+                    <div class="page-curl"></div>
+                </div>
+                <div class="page-content page-back">
+                    <div class="page-text">
+                        This page intentionally left blank.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="page" id="page2">
+                <div class="page-content page-front">
+                    <div class="page-title"></div>
+                    <div class="page-text">
+                
+                    </div>
+                    <div class="page-number">2</div>
+                    <div class="page-curl"></div>
+                </div>
+                <div class="page-content page-back">
+                    <div class="page-text">
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="page" id="page5">
+                <div class="page-content page-front">
+                    <div class="page-title"></div>
+                    <div class="page-text">
+                       </div>
+                    <div class="page-number">3</div>
+                    <div class="page-curl"></div>
+                </div>
+                <div class="page-content page-back">
+                    <div class="page-text">
+                    
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="page" id="page4">
+                <div class="page-content page-front">
+                    <div class="page-title"></div>
+                    <div class="page-text">
+                        <div>
+                            <a href="https://mangalik.github.io/event/" class="view-button1">Click here 👈</a>
+                        </div>
+                       </div>
+                    <div class="page-number">4</div>
+                    <div class="page-curl"></div>
+                </div>
+                <div class="page-content page-back">
+                    <div class="page-text">
+                    
+                    </div>
+                </div>
+            </div>
+            
+           
+
+
+
+            <div class="page" id="page3">
+                <div class="page-content page-front">
+                    <div class="page-title"></div>
+                    <div class="page-text">
+                        <div style="text-align: center; margin: 20px 0;">
+                            <a href="https://mangalik.github.io/couple/" class="view-button">Click here 👈</a>
+                        </div>
+
+                        </div>
+                    <div class="page-number">5</div>
+                    <div class="page-curl"></div>
+                </div>
+                <div class="page-content page-back">
+                    <div class="page-text">
+                        
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="page" id="page6">
+                <div class="page-content page-front">
+                    <div class="page-title"></div>
+                    <div class="page-text"> 
+                        
+                        <div class="logo">
+                        
+                           
+                        <a href="https://amitt2x.github.io/final_mangalik/">Click here </a>
+                        </div>
+                        
+                        
+                       
+                       </div>
+                    <div class="page-number">6</div>
+                    <div class="page-curl"></div>
+                </div>
+                <div class="page-content page-back">
+                    <div class="page-text">
+                        End of preview.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <div class="nav-buttons">
+                <button id="prevBtn" class="nav-button" disabled>Previous Page</button>
+                <button id="nextBtn" class="nav-button">Next Page</button>
+            </div>
+            <div class="page-indicator">Page <span id="currentPage">1</span> of 6</div>
+        </div>
+    </div>
+
+    <button id="music-control" class="pulse-animation" title="Toggle Music">
+        <i class="fas fa-volume-up"></i>
+    </button>
+
+    <!-- Background music audio element with autoplay and muted attributes -->
+    <audio id="background-music" loop autoplay>
+        <source src="page2.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <script>
+        // Script to autoplay music when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const backgroundMusic = document.getElementById('background-music');
+            const musicControl = document.getElementById('music-control');
+            
+            // Try to play the music as soon as the page loads
+            try {
+                backgroundMusic.play().catch(function(error) {
+                    console.log("Autoplay prevented: ", error);
+                    // Many browsers require user interaction before playing audio
+                    // We'll update the icon to show it's currently muted
+                    if (musicControl.querySelector('i')) {
+                        musicControl.querySelector('i').className = 'fas fa-volume-mute';
+                    }
+                });
+            } catch (e) {
+                console.log("Error playing audio: ", e);
+            }
+            
+            // Toggle music on/off when the control button is clicked
+            musicControl.addEventListener('click', function() {
+                if (backgroundMusic.paused) {
+                    backgroundMusic.play();
+                    if (musicControl.querySelector('i')) {
+                        musicControl.querySelector('i').className = 'fas fa-volume-up';
+                    }
+                } else {
+                    backgroundMusic.pause();
+                    if (musicControl.querySelector('i')) {
+                        musicControl.querySelector('i').className = 'fas fa-volume-mute';
+                    }
+                }
+            });
+            
+            // The rest of your page2.js code would go here or be included after this script
+            // Page navigation code
+            const book = document.querySelector('.book');
+            const pages = document.querySelectorAll('.page');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const currentPageSpan = document.getElementById('currentPage');
+            
+            let currentPageIndex = 0;
+            const totalPages = pages.length;
+            
+            function updatePageIndicator() {
+                currentPageSpan.textContent = currentPageIndex + 1;
+                prevBtn.disabled = currentPageIndex === 0;
+                nextBtn.disabled = currentPageIndex === totalPages - 1;
+            }
+            
+            function turnPage(pageIndex) {
+                // Reset all pages
+                pages.forEach((page, idx) => {
+                    page.style.zIndex = totalPages - idx;
+                    page.classList.remove('flipped');
+                });
+                
+                // Flip pages up to current index
+                for (let i = 0; i < pageIndex; i++) {
+                    pages[i].classList.add('flipped');
+                }
+                
+                currentPageIndex = pageIndex;
+                updatePageIndicator();
+            }
+            
+            prevBtn.addEventListener('click', () => {
+                if (currentPageIndex > 0) {
+                    turnPage(currentPageIndex - 1);
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentPageIndex < totalPages - 1) {
+                    turnPage(currentPageIndex + 1);
+                }
+            });
+            
+            // Initialize
+            updatePageIndicator();
+        });
+    </script>
+</body>
+</html>
